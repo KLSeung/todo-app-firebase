@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import './Todo.css'
-import { List, ListItemText, ListItem, Button, makeStyles, Modal } from '@material-ui/core'
+import { List, ListItemText, ListItem, Button, makeStyles, Modal, Backdrop, Fade } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { db } from './firebase'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   todoList: {
     textAlign: "center",
   },
@@ -21,8 +21,20 @@ const useStyles = makeStyles({
   },
   icon: {
     color: "black"
-  }
-});
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    fontSize: "20px"
+  },
+}));
 
 function Todo(props) {
   const classes = useStyles();
@@ -34,13 +46,23 @@ function Todo(props) {
 
   return (
     <div>
-      <Modal           
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}           
         open={open}
-        onClose={e => setOpen(false)}>
-          <div>
-            <h1>open</h1>
-            <button onClick={e => setOpen(false)}>Close</button>
+        onClose={event => setOpen(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Edit Todo!</h2>
           </div>
+        </Fade>
       </Modal>
       {props.todos.map(todo => (
         <List className={classes.todoContainer}>
