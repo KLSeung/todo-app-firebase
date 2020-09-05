@@ -1,6 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import Todo from './Todo';
 import TodoForm from './TodoForm';
+import Header from './Header';
 import './App.css';
 import { db } from "./firebase";
 import firebase from 'firebase';
@@ -36,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Todo App! 📔</h1>
+      <Header />
       <div>
         <TodoForm input={input} addTodo={addTodo} setInput={setInput} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
       </div>
