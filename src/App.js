@@ -7,15 +7,19 @@ function App() {
 
   //Event to occur when button is clicked
   const addTodo = (event) => {
+    //prevent refresh since states get deleted after refreshing
+    event.preventDefault();
     setTodos([...todos, input]);
+    setInput('');
   }
 
   return (
     <div className="App">
       <h1>Hello World!</h1>
-      <input value={input} onChange={event => setInput(event.target.value)}/>
-      <button onClick={addTodo}>Add Todo</button>
-
+      <form>
+        <input value={input} onChange={event => setInput(event.target.value)}/>
+        <button onClick={addTodo} type="submit">Add Todo</button>
+      </form>
       <ul>
         {todos.map(todo => (
           <li>{todo}</li>
