@@ -1,3 +1,7 @@
 .todo__list {
   text-align: center;
 }
+
+.DeleteIcon:hover {
+  background-color: #658dae;
+}

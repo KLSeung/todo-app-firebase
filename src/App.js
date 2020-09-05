@@ -14,7 +14,8 @@ function App() {
     //collect all the todos from the firestore, everytime it chanages take a snapshot run a callback
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       //Docs are all of the todos in the DB, doc.data just returns an object of the data so we need to get the string value
-      setTodos(snapshot.docs.map(doc => doc.data().todo))
+      //We pass in an object into the array to contain the doc.id in order for deletion of the data
+      setTodos(snapshot.docs.map(doc => ({id: doc.id, todo: doc.data().todo})))
     });
   }, []); //blank array as a dependency means run once when app loads 
 
