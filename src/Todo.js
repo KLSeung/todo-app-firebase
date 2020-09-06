@@ -46,19 +46,19 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    fontSize: "20px"
+    fontSize: "20px",
+    outline: 'none'
   },
   editForm: {
     marginTop: "20px",
-    width: "400px"
+    width: "500px"
   },
   inputLabel: {
     top: 'auto',
     left: 'auto'
-  }
+  },
 }));
 
 function Todo(props) {
@@ -96,8 +96,9 @@ function Todo(props) {
           <div className={classes.paper}>
             <h2 id="transition-modal-title">{`Edit Todo: ${props.todo.todo}`}</h2>
             <FormControl className={classes.editForm}>
-              <InputLabel>Change todo to</InputLabel>
-              <Input 
+              <InputLabel className={classes.inputLabel}>Change todo to</InputLabel>
+              <Input
+                className={classes.inputs} 
                 value={input}
                 onChange={event => setInput(event.target.value)} 
                 onKeyPress={(event) => {
