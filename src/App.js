@@ -41,11 +41,9 @@ function App() {
       <div>
         <TodoForm input={input} addTodo={addTodo} setInput={setInput} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
       </div>
-      <ul>      
         {todos.map(todo => (
-        <Todo todo={todo}/>
+        <Todo todo={todo} />
         ))}
-      </ul>
     </div>
   );
 }
