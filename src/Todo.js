@@ -49,15 +49,15 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     fontSize: "20px",
-    outline: 'none'
+    outline: "none"
   },
   editForm: {
     marginTop: "20px",
     width: "500px"
   },
   inputLabel: {
-    top: 'auto',
-    left: 'auto'
+    top: "auto",
+    left: "auto"
   },
 }));
 

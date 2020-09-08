@@ -34,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     width: "300px"
+  },
+  title: {
+    flexGrow: 1,
+    textAlign: "center",
+    marginLeft: "250px"
   }
 }));
 
@@ -45,6 +50,32 @@ function Header() {
   const [loginPassInput, setLoginPassInput] = useState(''); 
   const [registerIDInput, setRegisterIDInput] = useState('');
   const [registerPassInput, setRegisterPassInput] = useState(''); 
+  
+  const signup = () => {
+    //This is async so it returns a promise
+    auth.createUserWithEmailAndPassword(registerIDInput, registerPassInput).then(cred => {
+      console.log(cred.user);
+      setRegisterOpen(false);
+      setRegisterIDInput('');
+      setRegisterPassInput('');
+    });
+  }
+
+  const login = () => {
+    auth.signInWithEmailAndPassword(loginIDInput, loginPassInput).then(cred => {
+      console.log(cred.user)
+      setLoginOpen(false);
+      setLoginIDInput('');
+      setLoginPassInput('');
+    });
+
+  }
+  
+  const logout = () => {
+    auth.signOut().then(() => {
+      console.log('User has signed out!')
+    });
+  }
 
   return (
     <div>
@@ -55,6 +86,7 @@ function Header() {
           </Typography>
           <Button color="inherit" onClick={e => {setLoginOpen(true)}}>Login</Button>
           <Button color="inherit" onClick={e => {setRegisterOpen(true)}}>Register</Button>
+          <Button color="inherit" onClick={logout}>Logout</Button>
         </Toolbar>
       </AppBar>
 
@@ -79,6 +111,7 @@ function Header() {
               <InputLabel>Email</InputLabel>
               <Input 
                 className={classes.input}
+                type="email"
                 value={loginIDInput}
                 onChange={event => setLoginIDInput(event.target.value)} 
                 onKeyPress={(event) => {
@@ -91,15 +124,17 @@ function Header() {
             <InputLabel>Password</InputLabel>
               <Input 
                 className={classes.input}
+                type="pass"
                 value={loginPassInput}
                 onChange={event => setLoginPassInput(event.target.value)} 
                 onKeyPress={(event) => {
                   if (event.key === 'Enter') {
+                    login();
                   }
                 }}
                 />
             </FormControl>
-              <Button className={classes.button} type="submit" disabled={!loginIDInput || !loginPassInput} >Login</Button>
+              <Button className={classes.button} type="submit" disabled={!loginIDInput || !loginPassInput} onClick={login} >Login</Button>
           </div>
         </Fade>
       </Modal>
@@ -125,6 +160,7 @@ function Header() {
               <InputLabel>Email</InputLabel>
               <Input 
                 className={classes.input}
+                type="email"
                 value={registerIDInput}
                 onChange={event => setRegisterIDInput(event.target.value)} 
                 onKeyPress={(event) => {
@@ -137,15 +173,17 @@ function Header() {
             <InputLabel>Password</InputLabel>
               <Input 
                 className={classes.input}
-                value={loginPassInput}
-                onChange={event => setLoginPassInput(event.target.value)} 
+                type="password"
+                value={registerPassInput}
+                onChange={event => setRegisterPassInput(event.target.value)} 
                 onKeyPress={(event) => {
                   if (event.key === 'Enter') {
+                    signup()
                   }
                 }}
                 />
             </FormControl>
-            <Button className={classes.button} type="submit" disabled={!registerIDInput} >Register</Button>
+            <Button className={classes.button} type="submit" disabled={!registerIDInput} onClick={signup} >Register</Button>
           </div>
         </Fade>
       </Modal>
