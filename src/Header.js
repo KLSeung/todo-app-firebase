@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Header() {
+function Header(props) {
   const classes = useStyles();
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
@@ -54,27 +54,39 @@ function Header() {
   const signup = () => {
     //This is async so it returns a promise
     auth.createUserWithEmailAndPassword(registerIDInput, registerPassInput).then(cred => {
-      console.log(cred.user);
       setRegisterOpen(false);
       setRegisterIDInput('');
       setRegisterPassInput('');
     });
-  }
+  };
 
   const login = () => {
     auth.signInWithEmailAndPassword(loginIDInput, loginPassInput).then(cred => {
-      console.log(cred.user)
       setLoginOpen(false);
       setLoginIDInput('');
       setLoginPassInput('');
     });
+  };
 
-  }
-  
   const logout = () => {
-    auth.signOut().then(() => {
-      console.log('User has signed out!')
-    });
+    auth.signOut();
+    props.setUser('')
+  }
+
+  const NavButtons = () => {
+    if (props.user) {
+      console.log('true')
+      return (<Button color="inherit" onClick={logout}>Logout</Button>)
+    } else {
+      console.log('false')
+      return (
+        
+        <div>
+          <Button color="inherit" onClick={e => {setLoginOpen(true)}}>Login</Button>
+          <Button color="inherit" onClick={e => {setRegisterOpen(true)}}>Register</Button>
+        </div>
+      )
+    }
   }
 
   return (
@@ -84,9 +96,17 @@ function Header() {
           <Typography variant="h6" className={classes.title}>
             WhatToDo
           </Typography>
+        {props.user ?
+        <div>
+          <Button color="inherit">Welcome User!</Button>
+          <Button color="inherit" onClick={logout}>Logout</Button> 
+        </div>
+        :
+        <div>
           <Button color="inherit" onClick={e => {setLoginOpen(true)}}>Login</Button>
           <Button color="inherit" onClick={e => {setRegisterOpen(true)}}>Register</Button>
-          <Button color="inherit" onClick={logout}>Logout</Button>
+        </div>
+        }
         </Toolbar>
       </AppBar>
 
@@ -97,6 +117,8 @@ function Header() {
         open={loginOpen}
         onClose={event => {
           setLoginOpen(false)
+          setLoginIDInput('')
+          setLoginPassInput('')
         }}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -124,7 +146,7 @@ function Header() {
             <InputLabel>Password</InputLabel>
               <Input 
                 className={classes.input}
-                type="pass"
+                type="password"
                 value={loginPassInput}
                 onChange={event => setLoginPassInput(event.target.value)} 
                 onKeyPress={(event) => {
@@ -146,6 +168,8 @@ function Header() {
         open={registerOpen}
         onClose={event => {
           setRegisterOpen(false)
+          setRegisterIDInput('')
+          setRegisterPassInput('')
         }}
         closeAfterTransition
         BackdropComponent={Backdrop}
