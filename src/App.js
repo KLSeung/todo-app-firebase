@@ -30,10 +30,11 @@ function App() {
     auth.onAuthStateChanged(user => { 
       if (user) {
         setUser(user);
-        db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        db.collection('todos').where('userID', '==', user.uid).orderBy('timestamp', 'desc').onSnapshot(snapshot => {
           //Docs are all of the todos in the DB, doc.data just returns an object of the data so we need to get the string value
           //We pass in an object into the array to contain the doc.id in order for deletion of the data
           setTodos(snapshot.docs.map(doc => ({id: doc.id, todo: doc.data().todo, deadline: doc.data().deadline})))})
+        
         } else {
           setUser(user);
           setTodos([]);
@@ -46,6 +47,8 @@ function App() {
     //prevent refresh since states get deleted after refreshing
     event.preventDefault();
 
+    //I added userID to each data, but I'm not sure how to get firestore rules to filter out only the data that 
+    //has the current userID... Otherwise this project is pretty much completed!
     db.collection('todos').add({
       todo: input,
       deadline: selectedDate,
